@@ -118,12 +118,12 @@ def load_image_by_index_and_normalize(image_index):
     return img.astype(MODEL_INPUT_DATA_TYPE)
 
 
-def load_preprocessed_batch(image_list, image_index):
+def load_preprocessed_batch(image_list, image_index, batch_size=BATCH_SIZE):
     batch_data = None
-    for in_batch_idx in range(BATCH_SIZE):
+    for in_batch_idx in range(batch_size):
         img = load_image_by_index_and_normalize(image_index)
         if batch_data is None:
-            batch_data = np.empty( (BATCH_SIZE, *img.shape), dtype=MODEL_INPUT_DATA_TYPE)
+            batch_data = np.empty( (batch_size, *img.shape), dtype=MODEL_INPUT_DATA_TYPE)
         batch_data[in_batch_idx] = img
         image_index += 1
 
