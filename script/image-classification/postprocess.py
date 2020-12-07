@@ -24,6 +24,7 @@ def ck_postprocess(i):
   global IMAGES_COUNT
   IMAGES_COUNT = BATCH_COUNT * BATCH_SIZE
   SKIP_IMAGES = int(my_env('CK_SKIP_IMAGES'))
+  COUNT_SKIPPED_IMAGES = my_env('CK_COUNT_SKIPPED_IMAGES').lower() in ('true', 'yes', 'on', '1')
   RESULTS_DIR = 'predictions'
   NUM_CLASSES = 1000
   PREPROCESSED_EXT = dep_env('images', 'CK_ENV_DATASET_IMAGENET_PREPROCESSED_NEW_EXTENSION') or 'JPEG'
@@ -38,6 +39,7 @@ def ck_postprocess(i):
 
   # Loads ImageNet classes and correct predictions
   def load_ImageNet_classes():
+    global IMAGES_COUNT
     classes_list = []
     with open(CLASSES_FILE, 'r') as classes_file:
       classes_list = classes_file.read().splitlines()
@@ -54,10 +56,14 @@ def ck_postprocess(i):
       else:
         # Directory mode: load only required number of values
         for _ in range(SKIP_IMAGES):
-          values_file.readline().split()
+          val = values_file.readline().split()
+          if COUNT_SKIPPED_IMAGES:
+              values_map[val[0]] = int(val[1])
         for _ in range(IMAGES_COUNT):
           val = values_file.readline().split()
           values_map[val[0]] = int(val[1])
+        if COUNT_SKIPPED_IMAGES:
+            IMAGES_COUNT += SKIP_IMAGES
 
     return classes_list, values_map
 
