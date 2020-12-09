@@ -31,7 +31,7 @@
     "r0.7": {
       "on_by_default": "yes",
       "extra_env": {
-        "PACKAGE_URL": "https://github.com/mlperf/inference",
+        "PACKAGE_URL": "https://github.com/mlcommons/inference",
         "PACKAGE_GIT_CHECKOUT": "r0.7"
       },
       "extra_customize": {
@@ -42,7 +42,7 @@
     "upstream.master": {
       "on_by_default": "no",
       "extra_env": {
-        "PACKAGE_URL": "https://github.com/mlperf/inference"
+        "PACKAGE_URL": "https://github.com/mlcommons/inference"
       },
       "extra_customize": {
         "package_extra_name": " (upstream repository - default)"
