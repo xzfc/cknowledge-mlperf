@@ -24,7 +24,7 @@ def ck_postprocess(i):
   global IMAGES_COUNT
   IMAGES_COUNT = BATCH_COUNT * BATCH_SIZE
   SKIP_IMAGES = int(my_env('CK_SKIP_IMAGES'))
-  COUNT_SKIPPED_IMAGES = my_env('CK_COUNT_SKIPPED_IMAGES').lower() in ('true', 'yes', 'on', '1')
+  COUNT_SKIPPED_IMAGES = (my_env('CK_COUNT_SKIPPED_IMAGES') or 'no').lower() in ('true', 'yes', 'on', '1')
   RESULTS_DIR = 'predictions'
   NUM_CLASSES = 1000
   PREPROCESSED_EXT = dep_env('images', 'CK_ENV_DATASET_IMAGENET_PREPROCESSED_NEW_EXTENSION') or 'JPEG'
