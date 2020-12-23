@@ -11,6 +11,7 @@
     "default": {
       "ignore_return_code": "no",
       "run_time": {
+        "skip_print_execution_time": "yes",
         "fine_grain_timer_file": "tmp-ck-timer.json",
         "post_process_via_ck": {
           "data_uoa": "b98ee24399ef4c3a",
