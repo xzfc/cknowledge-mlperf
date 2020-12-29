@@ -23,5 +23,8 @@
     "tokenized",
     "pickled"
   ],
-  "template": "no"
+  "use_customize_script_from_another_entry": {
+    "data_uoa": "dataset.squad.original",
+    "module_uoa": "soft"
+  }
 }
