@@ -59,7 +59,6 @@ def setup(i):
     full_path       = cus.get('full_path','')
 
     env             = i['env']
-    env[env_prefix] = os.path.dirname( full_path )
-    env[env_prefix+'_ORIGINAL'] = full_path
+    env[env_prefix] = full_path
 
     return {'return':0, 'bat':s}

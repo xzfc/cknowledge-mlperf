@@ -3,7 +3,7 @@
   "customize": {
     "check_that_exists": "yes",
     "ck_version": 10,
-    "env_prefix": "CK_ENV_DATASET_SQUAD",
+    "env_prefix": "CK_ENV_DATASET_SQUAD_ORIGINAL",
     "extra_search_dirs": { "linux": [ "/datasets", "/data" ] },
     "limit_recursion_dir_search": {
       "linux": 5
