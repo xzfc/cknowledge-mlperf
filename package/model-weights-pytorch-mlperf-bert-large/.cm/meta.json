@@ -10,9 +10,10 @@
     },
     "no_os_in_suggested_path": "yes",
     "no_ver_in_suggested_path": "yes",
-    "version": "1.1"
+    "version": "2"
   },
   "end_full_path_universal": "model.pytorch",
+  "package_extra_name": " (MLPerf BERT Large)",
   "process_script": "install",
   "soft_uoa": "34c70aa3ff65a22c",
   "suggested_path": "model-weigths-pytorch-mlperf-bert-large",
