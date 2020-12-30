@@ -33,10 +33,18 @@
       "sort": 40,
       "tags": "lib,python-package,absl"
     },
+    "lib-python-tensorflow": {
+      "local": "yes",
+      "name": "Python TensorFlow library",
+      "sort": 50,
+      "tags": "lib,python-package,tensorflow,vpip",
+      "version_from": [ 1, 15, 4],
+      "version_to": [ 1, 15, 4]
+    },
     "lib-python-transformers": {
       "local": "yes",
       "name": "Python Transformers library",
-      "sort": 40,
+      "sort": 60,
       "tags": "lib,python-package,transformers",
       "version_from": [ 2, 4, 0],
       "version_to": [ 2, 4, 0]
@@ -45,7 +53,7 @@
       "add_to_path": "no",
       "local": "yes",
       "name": "MLPerf Inference source",
-      "sort": 50,
+      "sort": 70,
       "tags": "mlperf,inference,source,dividiti.bert"
     }
   },
