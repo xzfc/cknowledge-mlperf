@@ -5,14 +5,15 @@ import pickle
 import sys
 from transformers import BertTokenizer
 
+# Input and output file paths:
 squad_original_path     = sys.argv[1]
 tokenization_vocab_path = sys.argv[2]
 tokenized_squad_path    = sys.argv[3]
 
 # Tokenization parameters:
-max_seq_length = 384
-max_query_length = 64
-doc_stride = 128
+max_seq_length          = int(sys.argv[4])
+max_query_length        = int(sys.argv[5])
+doc_stride              = int(sys.argv[6])
 
 BERT_CODE_ROOT=os.environ['CK_ENV_MLPERF_INFERENCE']+'/language/bert'
 

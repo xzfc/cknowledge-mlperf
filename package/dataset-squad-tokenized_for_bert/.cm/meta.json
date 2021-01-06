@@ -67,5 +67,22 @@
     "tokenized",
     "pickled",
     "converted"
-  ]
+  ],
+  "variations": {
+    "width.384": {
+        "on_by_default": "yes",
+        "extra_env": {
+            "MAX_SEQ_LENGTH": 384,
+            "MAX_QUERY_LENGTH": 64,
+            "DOC_STRIDE": 128
+        }
+    },
+    "width.128": {
+        "extra_env": {
+            "MAX_SEQ_LENGTH": 128,
+            "MAX_QUERY_LENGTH": 64,
+            "DOC_STRIDE": 64
+        }
+    }
+  }
 }
