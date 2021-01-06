@@ -32,7 +32,7 @@ eval_features = []
 def append_feature(feature):
     eval_features.append(feature)
 
-print("Tokenizing examples to features...")
+print("Tokenizing examples to features (max_seq_length={}, max_query_length={}, doc_stride={}) ...".format(max_seq_length, max_query_length, doc_stride))
 convert_examples_to_features(
     examples=eval_examples,
     tokenizer=tokenizer,

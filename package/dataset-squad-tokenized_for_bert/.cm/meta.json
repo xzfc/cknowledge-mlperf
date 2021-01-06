@@ -2,6 +2,7 @@
   "check_exit_status": "yes",
   "customize": {
     "install_env": {
+        "*PACKAGE_VERSION": "$<<MAX_SEQ_LENGTH>>$.$<<MAX_QUERY_LENGTH>>$.$<<DOC_STRIDE>>$"
     },
     "no_os_in_suggested_path": "yes",
     "no_ver_in_suggested_path": "yes",
@@ -72,16 +73,16 @@
     "width.384": {
         "on_by_default": "yes",
         "extra_env": {
-            "MAX_SEQ_LENGTH": 384,
-            "MAX_QUERY_LENGTH": 64,
-            "DOC_STRIDE": 128
+            "MAX_SEQ_LENGTH": "384",
+            "MAX_QUERY_LENGTH": "64",
+            "DOC_STRIDE": "128"
         }
     },
     "width.128": {
         "extra_env": {
-            "MAX_SEQ_LENGTH": 128,
-            "MAX_QUERY_LENGTH": 64,
-            "DOC_STRIDE": 64
+            "MAX_SEQ_LENGTH": "128",
+            "MAX_QUERY_LENGTH": "64",
+            "DOC_STRIDE": "64"
         }
     }
   }
