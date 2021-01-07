@@ -57,8 +57,13 @@ def setup(i):
     cus             = i.get('customize',{})
     env_prefix      = cus['env_prefix']
     full_path       = cus.get('full_path','')
+    install_env     = cus.get('install_env', {})
 
     env             = i['env']
     env[env_prefix] = full_path
+
+    for varname in install_env.keys():
+        if varname.startswith('DATASET_'):
+            env[env_prefix+varname[len('DATASET'):]] = install_env[varname]
 
     return {'return':0, 'bat':s}
