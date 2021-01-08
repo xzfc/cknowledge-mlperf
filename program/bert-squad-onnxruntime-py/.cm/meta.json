@@ -1,0 +1,78 @@
+{
+  "backup_data_uid": "b99f43809d79a92c",
+  "build_compiler_vars": {},
+  "data_name": "bert-squad-onnxruntime-py",
+  "main_language": "python",
+  "no_compile": "yes",
+  "no_target_file": "yes",
+  "pass_env_to_resolve": "yes",
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_cmds": {
+    "default": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../bert_squad_onnxruntime.py"
+      }
+    }
+  },
+  "run_deps": {
+    "dataset-original": {
+      "local": "yes",
+      "name": "Original SQuAD dataset",
+      "sort": 110,
+      "tags": "dataset,squad,original"
+    },
+    "dataset-tokenized": {
+      "local": "yes",
+      "name": "SQuAD dataset tokenized for BERT",
+      "sort": 120,
+      "tags": "dataset,squad,tokenized,width.384"
+    },
+    "lib-python-numpy": {
+      "local": "yes",
+      "name": "Python NumPy library",
+      "sort": 20,
+      "tags": "lib,python-package,numpy"
+    },
+    "lib-python-tensorflow": {
+      "local": "yes",
+      "name": "Python TensorFlow library",
+      "sort": 30,
+      "tags": "lib,python-package,tensorflow"
+    },
+    "lib-python-onnxruntime": {
+      "local": "yes",
+      "name": "ONNX runtime library",
+      "sort": 40,
+      "tags": "lib,python-package,onnxruntime"
+    },
+    "mlperf-inference-src": {
+      "add_to_path": "no",
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "MLPerf Inference source",
+      "sort": 10,
+      "tags": "mlperf,inference,source,dividiti.bert"
+    },
+    "weights": {
+      "skipped": "yes",
+      "local": "yes",
+      "name": "Onnx model for BERT",
+      "sort": 130,
+      "tags": "model,weights,onnx,bert"
+    }
+  },
+  "run_vars": {
+    "CK_BATCH_COUNT": "0",
+    "CK_DISABLE_CUDA": "NO",
+    "CK_ENV_MODEL_ONNX_FILEPATH": "/datasets/bert_large_data/bert_tf_v1_1_large_fp32_384_v2/model.onnx"
+  },
+  "tags": [
+    "bert",
+    "squad",
+    "onnx",
+    "onnxruntime",
+    "lang-python"
+  ]
+}
