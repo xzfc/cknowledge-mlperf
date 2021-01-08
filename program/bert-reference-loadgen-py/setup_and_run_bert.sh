@@ -46,6 +46,25 @@ git -C $BERT_REF_ROOT submodule update --init DeepLearningExamples
 make -f ${BERT_REF_ROOT}/Makefile download_data
 make -f ${BERT_REF_ROOT}/Makefile download_model
 
+## Generate calibration dataset (if not previously generated):
+#
+if [ ! -e "$BERT_BUILD/data/full.json" ]; then
+    mv $BERT_BUILD/data/dev-v1.1.json $BERT_BUILD/data/full.json
+    $CK_ENV_COMPILER_PYTHON_FILE ../gen_calibration_dataset.py -f $BERT_BUILD/data/full.json -l $CK_ENV_MLPERF_INFERENCE/calibration/SQuAD-v1.1/bert-calibration.txt -o $BERT_BUILD/data/cal.json
+fi
+
+
+### Select the dataset to use for the current run
+rm -f $BERT_BUILD/data/dev-v1.1.json
+
+if [ -z "${CK_DATASET_CALIBRATION}" ]; then
+    echo "Selecting Full SQuAD dataset"
+    ln -s $BERT_BUILD/data/full.json $BERT_BUILD/data/dev-v1.1.json
+else
+    echo "Selecting Calibration SQuAD dataset"
+    ln -s $BERT_BUILD/data/cal.json $BERT_BUILD/data/dev-v1.1.json
+fi
+
 
 ## A link for our convenience (not used by the scripts) :
 #

@@ -14,6 +14,15 @@
       "run_time": {
         "run_cmd_main": "../setup_and_run_bert.sh"
       }
+    },
+    "calibration": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "run_cmd_main": "../setup_and_run_bert.sh"
+      },
+      "run_vars": {
+        "CK_DATASET_CALIBRATION": "yes"
+      }
     }
   },
   "run_deps": {
