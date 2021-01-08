@@ -56,13 +56,16 @@ fi
 
 ### Select the dataset to use for the current run
 rm -f $BERT_BUILD/data/dev-v1.1.json
+rm -f eval_features.pickle
 
 if [ -z "${CK_DATASET_CALIBRATION}" ]; then
     echo "Selecting Full SQuAD dataset"
     ln -s $BERT_BUILD/data/full.json $BERT_BUILD/data/dev-v1.1.json
+    ln -s eval_features.pickle.full eval_features.pickle 2>/dev/null
 else
     echo "Selecting Calibration SQuAD dataset"
     ln -s $BERT_BUILD/data/cal.json $BERT_BUILD/data/dev-v1.1.json
+    ln -s eval_features.pickle.cal eval_features.pickle 2>/dev/null
 fi
 
 
@@ -91,3 +94,14 @@ fi
 ## Run BERT inference:
 #
 $CK_ENV_COMPILER_PYTHON_FILE ${BERT_REF_ROOT}/run.py --mlperf_conf=${CK_ENV_MLPERF_INFERENCE}/mlperf.conf --user_conf=${PATH_TO_USER_CONF} --backend=${CK_BERT_BACKEND} --scenario=${CK_LOADGEN_SCENARIO} $CK_LOADGEN_MODE_STRING $CK_LOADGEN_MAX_EXAMPLES_STRING
+
+# Cache the cached dataset
+if [ -z "${CK_DATASET_CALIBRATION}" ]; then
+    if [ ! -f ./eval_features.pickle.full ]; then
+        mv eval_features.pickle eval_features.pickle.full
+    fi
+else
+if [ ! -f ./eval_features.pickle.cal ]; then
+        mv eval_features.pickle eval_features.pickle.cal
+    fi
+fi
