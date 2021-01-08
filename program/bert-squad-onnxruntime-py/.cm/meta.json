@@ -47,6 +47,13 @@
       "sort": 40,
       "tags": "lib,python-package,onnxruntime"
     },
+    "lib-python-torch": {
+      "local": "yes",
+      "name": "PyTorch library",
+      "sort": 50,
+      "tags": "lib,python-package,torch",
+      "version_from": [ 1, 6, 0]
+    },
     "mlperf-inference-src": {
       "add_to_path": "no",
       "force_target_as_host": "yes",
