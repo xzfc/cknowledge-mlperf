@@ -60,7 +60,7 @@ RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${C
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
 # Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
-RUN ck pull repo:ck-mlperf
+RUN ck pull repo:ck-mlperf --url=https://github.com/dividiti/ck-mlperf
 RUN ck pull repo:ck-tensorrt
 
 # Use generic Linux settings with dummy frequency setting scripts.
