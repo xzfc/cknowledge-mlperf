@@ -4,6 +4,8 @@
     "extra_dir": "",
     "install_env": {
       "ML_MODEL_DATA_LAYOUT": "NHWC",
+      "ML_MODEL_MODEL_NAME": "ssd-mobilenet",
+
       "MODEL_CLASSES_LABELS": "flatlabels.txt",
       "MODEL_DATASET_TYPE": "coco",
       "MODEL_IMAGE_HEIGHT": "300",

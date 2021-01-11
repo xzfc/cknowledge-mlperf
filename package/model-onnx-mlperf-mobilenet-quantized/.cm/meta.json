@@ -3,6 +3,8 @@
   "customize": {
     "install_env": {
       "ML_MODEL_DATA_LAYOUT": "NCHW",
+      "ML_MODEL_MODEL_NAME": "mobilenet-quantized",
+
       "MODEL_IMAGE_HEIGHT": "224",
       "MODEL_IMAGE_WIDTH": "224",
 

@@ -4,6 +4,7 @@
     "extra_dir": "",
     "install_env": {
 
+      "ML_MODEL_MODEL_NAME": "ssd-resnet34",
       "ML_MODEL_DATA_LAYOUT": "NCHW",
       "ML_MODEL_DATA_TYPE": "float32",
       "ML_MODEL_INPUT_DATA_TYPE": "float32",
