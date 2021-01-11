@@ -21,7 +21,7 @@ SQUAD_DATASET_TOKENIZED_PATH    = os.environ['CK_ENV_DATASET_SQUAD_TOKENIZED']
 
 ## BERT model:
 #
-BERT_MODEL_PATH                 = os.environ['CK_ENV_MODEL_ONNX_FILEPATH']
+BERT_MODEL_PATH                 = os.environ['CK_ENV_ONNX_MODEL_ONNX_FILEPATH']
 
 ## Processing by batches:
 #

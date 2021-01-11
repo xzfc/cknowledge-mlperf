@@ -63,17 +63,14 @@
       "tags": "mlperf,inference,source,dividiti.bert"
     },
     "weights": {
-      "skipped": "yes",
       "local": "yes",
-      "name": "Onnx model for BERT",
+      "name": "ONNX model for BERT",
       "sort": 130,
-      "tags": "model,weights,onnx,bert"
+      "tags": "model,onnx,bert"
     }
   },
   "run_vars": {
-    "CK_BATCH_COUNT": "0",
-    "CK_DISABLE_CUDA": "NO",
-    "CK_ENV_MODEL_ONNX_FILEPATH": "/datasets/bert_large_data/bert_tf_v1_1_large_fp32_384_v2/model.onnx"
+    "CK_BATCH_COUNT": "0"
   },
   "tags": [
     "bert",
