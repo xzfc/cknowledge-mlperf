@@ -48,9 +48,15 @@ make -f ${BERT_REF_ROOT}/Makefile download_model
 
 ## Generate calibration dataset (if not previously generated):
 #
+if [ -h "$BERT_BUILD/data/dev-v1.1.json" ]; then
+    rm $BERT_BUILD/data/dev-v1.1.json
+fi
 if [ ! -e "$BERT_BUILD/data/full.json" ]; then
     mv $BERT_BUILD/data/dev-v1.1.json $BERT_BUILD/data/full.json
     $CK_ENV_COMPILER_PYTHON_FILE ../gen_calibration_dataset.py -f $BERT_BUILD/data/full.json -l $CK_ENV_MLPERF_INFERENCE/calibration/SQuAD-v1.1/bert-calibration.txt -o $BERT_BUILD/data/cal.json
+    if [ ! -e "$BERT_BUILD/data/cal.json" ]; then
+        exit 1
+    fi
 fi
 
 
