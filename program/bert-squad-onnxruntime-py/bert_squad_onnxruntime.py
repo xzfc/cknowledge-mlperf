@@ -25,7 +25,8 @@ BERT_MODEL_PATH                 = os.environ['CK_ENV_ONNX_MODEL_ONNX_FILEPATH']
 
 ## Processing by batches:
 #
-BATCH_COUNT             = int(os.getenv('CK_BATCH_COUNT', 1))
+BATCH_SIZE                      = int(os.getenv('CK_BATCH_SIZE', 1))
+BATCH_COUNT                     = int(os.getenv('CK_BATCH_COUNT', 1))
 
 
 sess_options = onnxruntime.SessionOptions()
@@ -45,24 +46,38 @@ if BATCH_COUNT<1:
     BATCH_COUNT = TOTAL_EXAMPLES
 
 encoded_accuracy_log = []
-for i in range(BATCH_COUNT):
-    selected_feature = eval_features[i]
+for batch_index in range(BATCH_COUNT):
 
-    fd = {
-        "input_ids": np.array(selected_feature.input_ids).astype(np.int64)[np.newaxis, :],
-        "input_mask": np.array(selected_feature.input_mask).astype(np.int64)[np.newaxis, :],
-        "segment_ids": np.array(selected_feature.segment_ids).astype(np.int64)[np.newaxis, :]
+    input_ids_stack     = []
+    input_mask_stack    = []
+    segment_ids_stack   = []
+
+    for index_in_batch in range(BATCH_SIZE):
+        global_index = batch_index * BATCH_SIZE + index_in_batch
+        selected_feature = eval_features[global_index]
+
+        input_ids_stack.append( np.array(selected_feature.input_ids) )
+        input_mask_stack.append( np.array(selected_feature.input_mask) )
+        segment_ids_stack.append( np.array(selected_feature.segment_ids) )
+
+    batch_input_dict = {
+        "input_ids":    np.stack( input_ids_stack ).astype(np.int64),
+        "input_mask":   np.stack( input_mask_stack ).astype(np.int64),
+        "segment_ids":  np.stack( segment_ids_stack ).astype(np.int64),
     }
+    scores = sess.run([o.name for o in sess.get_outputs()], batch_input_dict)
 
-    scores = sess.run([o.name for o in sess.get_outputs()], fd)
-    output = np.stack(scores, axis=-1)[0]
+    batch_output = np.stack(scores, axis=-1)
 
-    encoded_accuracy_log.append({'qsl_idx': i, 'data': output.tobytes().hex()})
-    print("Batch #{}/{} done".format(i+1, BATCH_COUNT))
+    for index_in_batch in range(BATCH_SIZE):
+        global_index = batch_index * BATCH_SIZE + index_in_batch
+        encoded_accuracy_log.append({'qsl_idx': global_index, 'data': batch_output[index_in_batch].tobytes().hex()})
+
+    print("Batch #{}/{} done".format(batch_index+1, BATCH_COUNT))
 
 
 with open('accuracy_log.json', 'w') as accuracy_log_file:
     json.dump(encoded_accuracy_log, accuracy_log_file)
 
-cmd = "python3 "+BERT_CODE_ROOT+"/accuracy-squad.py --val_data={} --features_cache_file={} --log_file=accuracy_log.json --out_file=predictions.json --max_examples={}".format(SQUAD_DATASET_ORIGINAL_PATH, SQUAD_DATASET_TOKENIZED_PATH, BATCH_COUNT)
+cmd = "python3 "+BERT_CODE_ROOT+"/accuracy-squad.py --val_data={} --features_cache_file={} --log_file=accuracy_log.json --out_file=predictions.json --max_examples={}".format(SQUAD_DATASET_ORIGINAL_PATH, SQUAD_DATASET_TOKENIZED_PATH, BATCH_COUNT*BATCH_SIZE)
 subprocess.check_call(cmd, shell=True)
