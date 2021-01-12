@@ -70,7 +70,7 @@
     }
   },
   "run_vars": {
-    "CK_BATCH_COUNT": "0"
+    "CK_BATCH_COUNT": "1"
   },
   "tags": [
     "bert",

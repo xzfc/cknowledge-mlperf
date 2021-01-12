@@ -41,10 +41,8 @@ print("Example width: {}".format(len(eval_features[0].input_ids)))
 
 TOTAL_EXAMPLES  = len(eval_features)
 print("Total examples available: {}".format(TOTAL_EXAMPLES))
-
-## Processing by batches:
-#
-BATCH_COUNT             = int(os.getenv('CK_BATCH_COUNT')) or TOTAL_EXAMPLES
+if BATCH_COUNT<1:
+    BATCH_COUNT = TOTAL_EXAMPLES
 
 encoded_accuracy_log = []
 for i in range(BATCH_COUNT):
