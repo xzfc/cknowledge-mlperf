@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import math
 import os
 import pickle
 import subprocess
@@ -43,16 +44,24 @@ print("Example width: {}".format(len(eval_features[0].input_ids)))
 TOTAL_EXAMPLES  = len(eval_features)
 print("Total examples available: {}".format(TOTAL_EXAMPLES))
 if BATCH_COUNT<1:
-    BATCH_COUNT = TOTAL_EXAMPLES
+    BATCH_COUNT = math.ceil(TOTAL_EXAMPLES/BATCH_SIZE)
+    selected_size = TOTAL_EXAMPLES
+else:
+    selected_size = BATCH_COUNT * BATCH_SIZE
 
 encoded_accuracy_log = []
 for batch_index in range(BATCH_COUNT):
+
+    if (batch_index+1)*BATCH_SIZE <= TOTAL_EXAMPLES:    # regular batch
+        this_batch_size = BATCH_SIZE
+    else:
+        this_batch_size = TOTAL_EXAMPLES % BATCH_SIZE   # last incomplete batch of a full dataset run
 
     input_ids_stack     = []
     input_mask_stack    = []
     segment_ids_stack   = []
 
-    for index_in_batch in range(BATCH_SIZE):
+    for index_in_batch in range(this_batch_size):
         global_index = batch_index * BATCH_SIZE + index_in_batch
         selected_feature = eval_features[global_index]
 
@@ -69,15 +78,15 @@ for batch_index in range(BATCH_COUNT):
 
     batch_output = np.stack(scores, axis=-1)
 
-    for index_in_batch in range(BATCH_SIZE):
+    for index_in_batch in range(this_batch_size):
         global_index = batch_index * BATCH_SIZE + index_in_batch
         encoded_accuracy_log.append({'qsl_idx': global_index, 'data': batch_output[index_in_batch].tobytes().hex()})
 
-    print("Batch #{}/{} done".format(batch_index+1, BATCH_COUNT))
+    print("Batch[{}] #{}/{} done".format(this_batch_size, batch_index+1, BATCH_COUNT))
 
 
 with open('accuracy_log.json', 'w') as accuracy_log_file:
     json.dump(encoded_accuracy_log, accuracy_log_file)
 
-cmd = "python3 "+BERT_CODE_ROOT+"/accuracy-squad.py --val_data={} --features_cache_file={} --log_file=accuracy_log.json --out_file=predictions.json --max_examples={}".format(SQUAD_DATASET_ORIGINAL_PATH, SQUAD_DATASET_TOKENIZED_PATH, BATCH_COUNT*BATCH_SIZE)
+cmd = "python3 "+BERT_CODE_ROOT+"/accuracy-squad.py --val_data={} --features_cache_file={} --log_file=accuracy_log.json --out_file=predictions.json --max_examples={}".format(SQUAD_DATASET_ORIGINAL_PATH, SQUAD_DATASET_TOKENIZED_PATH, selected_size)
 subprocess.check_call(cmd, shell=True)
