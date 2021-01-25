@@ -5,10 +5,11 @@
   "data_name": "ck-mlperf",
   "dict": {
     "shared": "git",
-    "url": "https://github.com/ctuning/ck-mlperf",
+    "url": "https://github.com/krai/ck-mlperf",
     "repo_deps": [
       {
-        "repo_uoa": "ck-tensorflow"
+        "repo_uoa": "ck-tensorflow",
+        "repo_url": "https://github.com/krai/ck-tensorflow"
       },
       {
         "repo_uoa": "ck-nntest"
