@@ -16,7 +16,9 @@ These workflows are now being maintained and extended by [Krai Ltd](http://krai.
 - [Image Classification](#image_classification)
     - [Detect ImageNet](#image_classification_imagenet)
     - [Preprocess ImageNet](#image_classification_preprocess)
-
+        - [ResNet50](#image_classification_preprocess_resnet50)
+        - [Universal](#image_classification_preprocess_universal)
+        - [ResNet50 vs Universal](#image_classification_preprocess_resnet50_vs_universal)
 
 <a name="install"></a>
 # Installation
@@ -98,6 +100,7 @@ The minimal [OpenCV Python](https://pypi.org/project/opencv-python/) package can
 &#36; ck install package --tags=opencv-python-headless
 </pre>
 
+<a name="image_classification_preprocess_resnet50"></a>
 ### ResNet50
 
 The standard image resolution used for benchmarking ImageNet models is `224x224`. The reference code uses [bilinear interpolation](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L154) by default. For ResNet50, however, [area interpolation](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L172) is used. In addition, ResNet50 requires [means to be subtracted](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L178).
@@ -113,7 +116,7 @@ The dataset preprocessed for ResNet50 requires 29G on disk, as pixel components 
 29G     /home/anton/CK-TOOLS/dataset-imagenet-preprocessed-using-opencv-crop.875-for-resnet-full-side.224-unmutilated
 </pre>
 
-
+<a name="image_classification_preprocess_universal"></a>
 ### Universal
 
 An alternative method, dubbed universal, uses bilinear interpolation and stores pixels as 8-bit integers. The dataset preprocessed using the alternative method requires 7.1G on disk.
@@ -128,4 +131,16 @@ At load time, however, minor additional processing may be required depending on 
 7.1G    /home/anton/CK-TOOLS/dataset-imagenet-preprocessed-using-opencv-crop.875-full-inter.linear-side.224-universal-unmutilated
 </pre>
 
-### ResNet50 vs Universal
+<a name="image_classification_preprocess_resnet50_vs_universal"></a>
+### ResNet50 vs universal
+
+| Preprocessing method   | OpenCV for ResNet50       | OpenCV universal         |
+|-|-|-|
+| ResNet50 Top1 accuracy | 0.76456                   | 0.76422                  |
+| ResNet50 Top5 accuracy | 0.93016                   | 0.93074                  |
+| Matches reference?     | Yes                       | No                       |
+| Additional tags        | `using-opencv,for-resnet` | `using-opencv,universal` |
+| Supported models       | ResNet only               | ResNet, MobileNet        |
+| Supported platforms    | x86                       | x86                      |
+| Data format            | rgbf32 (float32)          | rgb8 (int8)              |
+| Data size              | 29G                       | 7.1G                     |
