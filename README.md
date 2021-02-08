@@ -1,6 +1,6 @@
 # Collective Knowledge workflows for MLPerf
 
-CK workflows in this repository were originally created by [dividiti Limited](http://dividiti.com) and used to prepare 50% of all results (900 out of 1800) submitted to [MLPerf Inference](https://github.com/mlcommons/inference) [v0.5](https://mlperf.org/inference-results-0-5/) and [v0.7](https://mlperf.org/inference-results-0-7/).
+CK workflows in this repository were originally created by [dividiti Limited](http://dividiti.com) and used to prepare ~50% of all results (~900 out of 1800) submitted to [MLPerf Inference](https://github.com/mlcommons/inference) [v0.5](https://mlperf.org/inference-results-0-5/) and [v0.7](https://mlperf.org/inference-results-0-7/).
 These workflows are now being maintained and extended by [Krai Ltd](http://krai.ai).
 
 [![compatibility](https://github.com/ctuning/ck-guide-images/blob/master/ck-compatible.svg)](https://github.com/ctuning/ck)
@@ -9,16 +9,24 @@ These workflows are now being maintained and extended by [Krai Ltd](http://krai.
 
 
 # Table of Contents
+
 - [Installation](#install)
     - [Install CK](#install_ck)
     - [Install CK repos](#install_ck_repos)
     - [Detect Python 3](#install_detect_python3)
+
 - [Image Classification](#image_classification)
     - [Detect ImageNet](#image_classification_imagenet)
     - [Preprocess ImageNet](#image_classification_preprocess)
         - [ResNet50](#image_classification_preprocess_resnet50)
         - [Universal](#image_classification_preprocess_universal)
         - [ResNet50 vs Universal](#image_classification_preprocess_resnet50_vs_universal)
+
+- [Object Detection](#object_detection)
+    - [Install COCO](#image_classification_coco)
+    - [Preprocess COCO](#object_detection_preprocess)
+        - [SSD-ResNet34](#object_detection_preprocess_ssd_resnet34)
+        - [SSD-MobileNet-v1](#object_detection_preprocess_ssd_mobilenet_v1)
 
 <a name="install"></a>
 # Installation
@@ -83,10 +91,11 @@ Platform init UOA:    -
 <a name="image_classification_imagenet"></a>
 ## Detect ImageNet
 
-Unfortunately, the ImageNet validation dataset (50,000 images) [cannot be freely downloaded](https://github.com/mlcommons/inference/issues/542).
+Unfortunately, the ImageNet 2012 validation dataset (50,000 images) [cannot be freely downloaded](https://github.com/mlcommons/inference/issues/542).
 If you have a copy of it e.g. under `/datasets/dataset-imagenet-ilsvrc2012-val/`, you can register it with CK ("detect") as follows:
 
-<pre>&#36; ck detect soft:dataset.imagenet.val \
+<pre>
+&#36; ck detect soft:dataset.imagenet.val \
 --full_path=/datasets/dataset-imagenet-ilsvrc2012-val/ILSVRC2012_val_00000001.JPEG
 </pre>
 
@@ -104,6 +113,8 @@ The minimal [OpenCV Python](https://pypi.org/project/opencv-python/) package can
 ### ResNet50
 
 The standard image resolution used for benchmarking ImageNet models is `224x224`. The reference code uses [bilinear interpolation](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L154) by default. For ResNet50, however, [area interpolation](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L172) is used. In addition, ResNet50 requires [means to be subtracted](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py#L178).
+
+To preprocess ImageNet specifically for ResNet50 (use `--ask` to confirm the destination):
 
 <pre>
 &#36; ck install package --tags=dataset,imagenet,preprocessed,using-opencv,full,for-resnet --ask
@@ -124,12 +135,10 @@ At load time, however, minor additional processing may be required depending on 
 
 <pre>
 &#36; ck install package --tags=dataset,imagenet,preprocessed,using-opencv,full,universal --ask
-</pre>
-
-<pre>
 &#36; du -hs $(ck locate env --tags=dataset,imagenet,preprocessed,using-opencv,full,universal)
 7.1G    /home/anton/CK-TOOLS/dataset-imagenet-preprocessed-using-opencv-crop.875-full-inter.linear-side.224-universal-unmutilated
 </pre>
+
 
 <a name="image_classification_preprocess_resnet50_vs_universal"></a>
 ### ResNet50 vs universal
@@ -144,3 +153,49 @@ At load time, however, minor additional processing may be required depending on 
 | Supported platforms    | x86                       | x86                      |
 | Data format            | rgbf32 (float32)          | rgb8 (int8)              |
 | Data size              | 29G                       | 7.1G                     |
+
+
+<a name="object_detection"></a>
+# Object Detection
+
+<a name="object_detection_coco"></a>
+## Install COCO
+
+To install the COCO 2017 validation dataset (use `--ask` to confirm the destination):
+
+<pre>
+&#36; ck install package --tags=dataset,coco,val,2017 --ask
+</pre>
+
+
+<a name="object_detection_preprocess"></a>
+## Preprocess COCO
+
+The [reference code](https://github.com/mlcommons/inference/blob/master/vision/classification_and_detection/python/dataset.py) uses OpenCV for preprocessing image data.
+The minimal [OpenCV Python](https://pypi.org/project/opencv-python/) package can be installed via CK as follows:
+
+<pre>
+&#36; ck install package --tags=opencv-python-headless
+</pre>
+
+<a name="object_detection_preprocess_ssd_resnet34"></a>
+### SSD-ResNet34
+
+SSD-ResNet34 requires resizing images to the `1200x1200` resolution:
+
+<pre>
+&#36; ck install package --tags=dataset,coco.2017,preprocessed,using-opencv,side.1200 --ask
+&#36; du -hs $(ck locate env --tags=dataset,coco.2017,preprocessed,using-opencv,full,side.1200
+21G     /home/anton/CK-TOOLS/dataset-object-detection-preprocessed-using-opencv-coco.2017-full-side.1200
+</pre>
+
+<a name="object_detection_preprocess_ssd_mobilenet_v1"></a>
+### SSD-MobileNet-v1
+
+SSD-MobileNet-v1 requires resizing images to the `300x300` resolution:
+
+<pre>
+&#36; ck install package --tags=dataset,coco.2017,preprocessed,using-opencv,full,side.300 --ask
+&#36; du -hs $(ck locate env --tags=dataset,coco.2017,preprocessed,using-opencv,full,side.300
+1.3G    /home/anton/CK-TOOLS/dataset-object-detection-preprocessed-using-opencv-coco.2017-full-side.300
+</pre>
