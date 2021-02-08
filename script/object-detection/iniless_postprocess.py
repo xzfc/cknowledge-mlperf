@@ -161,6 +161,8 @@ def ck_postprocess(i):
   print('Average image load time: {:.6f}s'.format(OPENME['run_time_state'].get('load_images_time_avg_s', 0)))
   print('All images detected in {:.6f}s'.format(OPENME['run_time_state'].get('prediction_time_total_s', 0)))
   print('Average detection time: {:.6f}s'.format(OPENME['run_time_state'].get('prediction_time_avg_s', 0)))
+  print('Total NMS time: {:.6f}s'.format(OPENME['run_time_state'].get('non_max_suppression_time_total_s', 0)))
+  print('Average NMS time: {:.6f}s'.format(OPENME['run_time_state'].get('non_max_suppression_time_avg_s', 0)))
   print('mAP: {}'.format(OPENME['mAP']))
   print('Recall: {}'.format(OPENME['recall']))
   print('--------------------------------\n')
