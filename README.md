@@ -20,7 +20,7 @@ These workflows are now being maintained and extended by [Krai Ltd](http://krai.
     - [Preprocess ImageNet](#image_classification_preprocess)
         - [ResNet50](#image_classification_preprocess_resnet50)
         - [Universal](#image_classification_preprocess_universal)
-        - [ResNet50 vs Universal](#image_classification_preprocess_resnet50_vs_universal)
+        - [ResNet50 vs universal](#image_classification_preprocess_resnet50_vs_universal)
 
 - [Object Detection](#object_detection)
     - [Install COCO](#image_classification_coco)
@@ -149,7 +149,7 @@ At load time, however, minor additional processing may be required depending on 
 | ResNet50 Top5 accuracy | 0.93016                   | 0.93074                  |
 | Matches reference?     | Yes                       | No                       |
 | Additional tags        | `using-opencv,for-resnet` | `using-opencv,universal` |
-| Supported models       | ResNet only               | ResNet, MobileNet        |
+| Supported models       | ResNet50 only             | ResNet50, MobileNet-224  |
 | Supported platforms    | x86                       | x86                      |
 | Data format            | rgbf32 (float32)          | rgb8 (int8)              |
 | Data size              | 29G                       | 7.1G                     |
@@ -184,7 +184,7 @@ The minimal [OpenCV Python](https://pypi.org/project/opencv-python/) package can
 SSD-ResNet34 requires resizing images to the `1200x1200` resolution:
 
 <pre>
-&#36; ck install package --tags=dataset,coco.2017,preprocessed,using-opencv,side.1200 --ask
+&#36; ck install package --tags=dataset,coco.2017,preprocessed,using-opencv,full,side.1200 --ask
 &#36; du -hs $(ck locate env --tags=dataset,coco.2017,preprocessed,using-opencv,full,side.1200
 21G     /home/anton/CK-TOOLS/dataset-object-detection-preprocessed-using-opencv-coco.2017-full-side.1200
 </pre>
