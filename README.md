@@ -21,6 +21,9 @@ These workflows are now being maintained and extended by [Krai Ltd](http://krai.
         - [ResNet50](#image_classification_preprocess_resnet50)
         - [Universal](#image_classification_preprocess_universal)
         - [ResNet50 vs universal](#image_classification_preprocess_resnet50_vs_universal)
+    - [Prepare a calibration dataset](#image_classification_cal)
+        - [Option 1](#image_classification_cal_option1)
+        - [Option 2](#image_classification_cal_option2)
 
 - [Object Detection](#object_detection)
     - [Install COCO](#image_classification_coco)
@@ -95,7 +98,7 @@ Unfortunately, the ImageNet 2012 validation dataset (50,000 images) [cannot be f
 If you have a copy of it e.g. under `/datasets/dataset-imagenet-ilsvrc2012-val/`, you can register it with CK ("detect") as follows:
 
 <pre>
-&#36; ck detect soft:dataset.imagenet.val \
+&#36; ck detect soft:dataset.imagenet.val --extra_tags=full \
 --full_path=/datasets/dataset-imagenet-ilsvrc2012-val/ILSVRC2012_val_00000001.JPEG
 </pre>
 
@@ -153,6 +156,34 @@ At load time, however, minor additional processing may be required depending on 
 | Supported platforms    | x86                       | x86                      |
 | Data format            | rgbf32 (float32)          | rgb8 (int8)              |
 | Data size              | 29G                       | 7.1G                     |
+
+
+<a name="image_classification_cal"></a>
+## Calibration
+
+<a name="image_classification_cal_option1"></a>
+For calibration, MLPerf provides two equivalent sets of 500 images, each randomly selected from the ImageNet validation dataset.
+
+### [Option 1](https://github.com/mlcommons/inference/blob/master/calibration/ImageNet/cal_image_list_option_1.txt) (favoured [by NVIDIA](https://github.com/mlcommons/inference_results_v0.7/blob/master/closed/NVIDIA/data_maps/imagenet/cal_map.txt) and [by Intel](https://github.com/mlcommons/inference_results_v0.7/blob/master/closed/Intel/calibration/OpenVINO/resnet50/imagenet_calibration_list_1.txt))
+
+<pre>
+&dollar; ck install package --tags=dataset,imagenet,cal,mlperf.option1 --dep_add_tags.imagenet-val=full
+&dollar; ck locate env --tags=dataset,imagenet,cal,mlperf.option1
+/home/anton/CK-TOOLS/dataset-imagenet-calibration-mlperf.option1
+&dollar; du -hs $(ck locate env --tags=dataset,imagenet,cal,mlperf.option2)
+65M	/home/anton/CK-TOOLS/dataset-imagenet-calibration-mlperf.option2
+</pre>
+
+<a name="image_classification_cal_option2"></a>
+### [Option 2](https://github.com/mlcommons/inference/blob/master/calibration/ImageNet/cal_image_list_option_2.txt)
+
+<pre>
+&dollar; ck install package --tags=dataset,imagenet,cal,mlperf.option2 --dep_add_tags.imagenet-val=full
+&dollar; ck locate env --tags=dataset,imagenet,cal,mlperf.option2
+/home/anton/CK-TOOLS/dataset-imagenet-calibration-mlperf.option2
+&dollar; du -hs $(ck locate env --tags=dataset,imagenet,cal,mlperf.option2)
+71M	/home/anton/CK-TOOLS/dataset-imagenet-calibration-mlperf.option2
+</pre>
 
 
 <a name="object_detection"></a>
