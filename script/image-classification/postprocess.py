@@ -12,9 +12,9 @@ import json
 TOP1 = 0
 TOP5 = 0
 IMAGES_COUNT = 0 # to be assigned
+SEPARATOR = '---------------------------------------'
 
 def ck_postprocess(i):
-  print('\n--------------------------------')
   def my_env(var): return i['env'].get(var)
   def dep_env(dep, var): return i['deps'][dep]['dict']['env'].get(var)
 
@@ -79,7 +79,7 @@ def ck_postprocess(i):
   # Shows prediction results for image file
   # top5 - list of pairs (prob, class_index)
   def print_predictions(top5, img_file):
-    print('---------------------------------------')
+    print(SEPARATOR)
     if img_file in VALUES_MAP:
       class_correct = VALUES_MAP[img_file]
       print('%s - %s' % (img_file, get_class_str(class_correct)))
@@ -87,7 +87,6 @@ def ck_postprocess(i):
       print(img_file)
     for prob, class_index in top5:
       print('%.2f - %s' % (prob, get_class_str(class_index)))
-    print('---------------------------------------')
 
 
   # Returns list of pairs (prob, class_index)
@@ -133,7 +132,7 @@ def ck_postprocess(i):
   frame_predictions = {}
 
   def calculate_precision():
-    print('Process results in {}'.format(RESULTS_DIR))
+    print('\nProcessed results from {} :'.format(RESULTS_DIR))
 
     def load_probes(filename):
       probes = []
@@ -196,8 +195,9 @@ def ck_postprocess(i):
   openme = {}
 
   # Print metrics
+  print(SEPARATOR)
   print('\nSummary:')
-  print('-------------------------------')
+  print(SEPARATOR)
 
   if NO_LOADGEN:
     # Preserve values stored by program
@@ -240,6 +240,6 @@ def ck_postprocess(i):
   with open('tmp-ck-timer.json', 'w') as o:
     json.dump(openme, o, indent=2, sort_keys=True)
 
-  print('--------------------------------\n')
+  print(SEPARATOR+"\n")
   return {'return': 0}
 
